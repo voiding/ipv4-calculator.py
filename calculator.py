@@ -18,7 +18,7 @@ parser.add_argument("-v", "--verbose",
 
 args = parser.parse_args()
 
-# Should be something like ["192", "168", "1", "1"]
+# Should be something like ["192", "168", "1", "1"] or equiv binary ["11000000", "10101000", "00000001", "00000001"]
 ip_address = args.address.split(".") 
 
 # Iteratively store length of octets, should be all 1s through all 3s for decimal and all 8 (8*4) for binary
@@ -41,4 +41,8 @@ if __name__ == '__main__':
         else:
             sys.exit(2)
 
-    convert_ip(args, ip_address, octet_lengths)
+    converted_ip = convert_ip(args, ip_address, octet_lengths)
+
+    # If it was given in binary notation, the octets summed will be 32 (8*4) and decimal would be returned,
+    # in which case sum(octet_lengths) would be greater than 12
+    print(f"{args.address} is {converted_ip} in {'decimal' if sum(octet_lengths) > 12 else 'binary'} notation")
